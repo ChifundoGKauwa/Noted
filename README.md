@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Noted
 
-## Getting Started
+Noted is a modern publishing and newsletter platform that enables authors to create and distribute stories while allowing readers to discover content and subscribe to publications they care about.
 
-First, run the development server:
+The platform supports multiple content categories, including technology, entertainment, design, culture, economics, and wellness. Readers can subscribe using their email address and receive notifications when new stories are published.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+The application is built with a Next.js frontend and a Rust/Axum backend, with PostgreSQL providing persistent data storage.
+
+---
+
+## Features
+
+### Publishing
+
+- Create and publish stories
+- Edit and manage published content
+- Organize stories by category
+- Featured stories
+- Recent publications
+- Author attribution
+- Story discovery and search
+
+### Subscriptions
+
+- Subscribe using an email address
+- Manage newsletter subscriptions
+- Receive notifications when new stories are published
+- Subscriber management through the backend API
+
+### Content
+
+- Technology
+- Entertainment
+- Design
+- Culture
+- Economics
+- Wellness
+- Additional categories can be added as the platform grows
+
+### Platform
+
+- Responsive web interface
+- RESTful backend API
+- Persistent PostgreSQL storage
+- Asynchronous backend operations
+- Email notification integration
+- Environment-based configuration
+
+---
+
+## Architecture
+
+Noted follows a decoupled frontend/backend architecture.
+
+```text
+                         ┌─────────────────────┐
+                         │      Readers        │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │     Next.js App     │
+                         │      Frontend       │
+                         └──────────┬──────────┘
+                                    │
+                              REST / HTTP
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │    Rust / Axum      │
+                         │      Backend        │
+                         └──────┬───────┬──────┘
+                                │       │
+                     ┌──────────┘       └──────────┐
+                     ▼                             ▼
+             ┌───────────────┐             ┌───────────────┐
+             │  PostgreSQL   │             │ Email Service │
+             │   Database    │             │ Notifications │
+             └───────────────┘             └───────────────┘
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
