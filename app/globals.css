@@ -1,26 +1,89 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f1e8;
+  --background-strong: #efe5d4;
+  --surface: #fffdf9;
+  --surface-elevated: #ffffff;
+  --surface-muted: #f4ebdd;
+  --foreground: #1c1b1a;
+  --muted: #5d5852;
+  --muted-strong: #3a3632;
+  --border: #e8dfd1;
+  --border-strong: #d9c9ad;
+  --primary: #1a2433;
+  --primary-soft: #2a3848;
+  --accent: #f3c76d;
+  --accent-strong: #dca947;
+  --accent-soft: #fef3d8;
+  --header-bg: #f8f4ef;
+  --footer-bg: #efe8df;
+  --shadow-soft: 0 18px 52px -28px rgba(28, 27, 26, 0.22);
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --background: #111416;
+  --background-strong: #1a1f22;
+  --surface: #171b1e;
+  --surface-elevated: #1e2327;
+  --surface-muted: #1c2124;
+  --foreground: #f3efe7;
+  --muted: #c1b7a6;
+  --muted-strong: #e3d8c7;
+  --border: #2b3135;
+  --border-strong: #3b4348;
+  --primary: #f4efe8;
+  --primary-soft: #dfe6eb;
+  --accent: #f3c76d;
+  --accent-strong: #e0b154;
+  --accent-soft: rgba(243, 199, 109, 0.18);
+  --header-bg: #171b1e;
+  --footer-bg: #121517;
+  --shadow-soft: 0 18px 52px -28px rgba(0, 0, 0, 0.65);
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-plus-jakarta-sans);
+  --font-mono: var(--font-plus-jakarta-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html[data-scroll-behavior="smooth"] {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+* {
+  font-family: var(--font-plus-jakarta-sans), Arial, Helvetica, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.logo,
+.brand {
+  font-family: var(--font-plus-jakarta-sans), Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(243, 199, 109, 0.35);
 }
