@@ -44,9 +44,22 @@ export function LoginForm({ accountCheck = false }: { accountCheck?: boolean }) 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), password }),
       });
-      const data = (await response.json()) as AuthResponse | { message?: string };
+      const responseText = await response.text();
+      let data: AuthResponse | { message?: string } = {};
+      if (responseText) {
+        try {
+          data = JSON.parse(responseText) as AuthResponse | { message?: string };
+        } catch {
+          // The backend may return an empty or non-JSON error response.
+        }
+      }
       if (!response.ok || !("author" in data)) {
-        throw new Error("message" in data && data.message ? data.message : "Unable to sign in.");
+        const message = "message" in data ? data.message : undefined;
+        throw new Error(
+          message ?? (response.status === 401
+            ? "Email or password is incorrect."
+            : "Unable to sign in. Please try again."),
+        );
       }
       router.replace("/dashboard");
     } catch (cause) {
