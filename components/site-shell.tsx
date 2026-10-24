@@ -6,9 +6,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Publish", href: "/publish" },
-  { label: "Login", href: "/login" },
-  { label: "Register", href: "/register" },
+  { label: "Write story", href: "/write" },
 ];
 
 export function SiteHeader() {
@@ -42,13 +40,13 @@ export function SiteHeader() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <Link
-            href="/register"
+            href="/#newsletter-subscribe"
             className="hidden items-center justify-center rounded-full bg-[var(--surface-muted)] px-3.5 py-2 text-xs font-medium text-[var(--foreground)] transition hover:bg-[var(--surface-elevated)] sm:inline-flex"
           >
             Subscribe
           </Link>
           <Link
-            href="/publish"
+            href="/write"
             className="inline-flex items-center justify-center rounded-full bg-[var(--foreground)] px-3.5 py-2 text-xs font-medium text-[var(--background)] transition hover:opacity-90"
           >
             Write story
@@ -97,17 +95,7 @@ export function SiteFooter() {
           </p>
           <ul className="mt-4 space-y-2 text-sm text-[var(--muted)]">
             <li>
-              <Link href="/login" className="hover:text-[var(--foreground)]">
-                Sign in
-              </Link>
-            </li>
-            <li>
-              <Link href="/register" className="hover:text-[var(--foreground)]">
-                Create account
-              </Link>
-            </li>
-            <li>
-              <Link href="/publish" className="hover:text-[var(--foreground)]">
+              <Link href="/write" className="hover:text-[var(--foreground)]">
                 Write story
               </Link>
             </li>

@@ -2,11 +2,43 @@
 
 import Link from "next/link";
 import { ArrowRight, Eye } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [subscribe, setSubscribe] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const pendingEmail = sessionStorage.getItem("noted_write_email");
+    if (!pendingEmail) return;
+    const timer = window.setTimeout(() => setEmail(pendingEmail), 0);
+    sessionStorage.removeItem("noted_write_email");
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  async function register(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (pending) return;
+    setPending(true);
+    setError("");
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), password }),
+      });
+      const data = (await response.json()) as { author?: { id: string; name: string; email: string }; message?: string };
+      if (!response.ok || !data.author) throw new Error(data.message || "Unable to create your account.");
+      router.push("/publish");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Unable to create your account.");
+    } finally { setPending(false); }
+  }
 
   return (
     <main className="mx-auto grid max-w-7xl lg:grid-cols-2 lg:gap-12">
@@ -23,8 +55,8 @@ export default function RegisterPage() {
 
           {/* Main Quote */}
           <h1 className="mb-6 text-[2.5rem] font-bold leading-[1.1] tracking-[-0.03em] text-[var(--foreground)]">
-            "A publication dedicated to the preservation of disciplined thought, architectural grace, and independent
-            critique."
+            &ldquo;A publication dedicated to the preservation of disciplined thought, architectural grace, and independent
+            critique.&rdquo;
           </h1>
 
           <p className="mb-12 text-[15px] leading-relaxed text-[var(--muted)]">
@@ -32,30 +64,6 @@ export default function RegisterPage() {
             designers shaping modern culture without algorithmic manipulation.
           </p>
 
-          {/* Archive Card */}
-          <div className="mb-6 rounded-2xl border border-[var(--border)] bg-[var(--surface-muted)] p-6">
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-              Dispatches Archive • Vol. 14 / No. 02
-            </p>
-            <h3 className="mb-3 text-xl font-bold leading-tight tracking-[-0.02em] text-[var(--foreground)]">
-              The Geometry of Quietude: Form, Void, and Modern Architecture
-            </h3>
-            <p className="text-sm leading-relaxed text-[var(--muted)]">
-              Weekly monographs and unhurried essays directly delivered to your correspondence table every Saturday
-              dawn.
-            </p>
-          </div>
-
-          {/* Author Badge */}
-          <div className="inline-flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--foreground)] text-sm font-bold text-[var(--surface)]">
-              N
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-[var(--foreground)]">The Curators Desk,</p>
-              <p className="text-xs text-[var(--muted)]">Zürich</p>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -75,7 +83,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Social Login */}
-          <div className="mb-6 grid grid-cols-2 gap-3">
+          <div className="mb-6 hidden grid-cols-2 gap-3">
             <button
               type="button"
               className="flex items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--surface-muted)]"
@@ -125,7 +133,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Registration Form */}
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={register}>
             <div>
               <label
                 htmlFor="fullname"
@@ -136,6 +144,10 @@ export default function RegisterPage() {
               <input
                 id="fullname"
                 type="text"
+                required
+                autoComplete="name"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
                 placeholder="e.g. Clara V. Vance"
                 className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-[var(--foreground)] focus:outline-none focus:ring-1 focus:ring-[var(--foreground)]"
               />
@@ -151,6 +163,10 @@ export default function RegisterPage() {
               <input
                 id="email"
                 type="email"
+                required
+                autoComplete="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 placeholder="name@domain.com"
                 className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-[var(--foreground)] focus:outline-none focus:ring-1 focus:ring-[var(--foreground)]"
               />
@@ -170,6 +186,11 @@ export default function RegisterPage() {
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
+                  required
+                  minLength={8}
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
                   placeholder="••••••••••••"
                   className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-3 pr-12 text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-[var(--foreground)] focus:outline-none focus:ring-1 focus:ring-[var(--foreground)]"
                 />
@@ -184,39 +205,21 @@ export default function RegisterPage() {
               <p className="mt-1.5 text-xs text-[var(--muted)]">Include letters, numbers, and symbols</p>
             </div>
 
-            <div className="flex items-start gap-3">
-              <input
-                id="subscribe"
-                type="checkbox"
-                checked={subscribe}
-                onChange={(e) => setSubscribe(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-[var(--border)] text-[var(--foreground)] focus:ring-[var(--foreground)]"
-              />
-              <label htmlFor="subscribe" className="text-sm leading-relaxed text-[var(--muted)]">
-                Subscribe to the Noted. Weekend Editorial digest. Curated long-form releases delivered every Saturday
-                morning.
-              </label>
-            </div>
+            {error ? <p role="alert" className="text-sm text-red-600">{error}</p> : null}
 
             <button
               type="submit"
+              disabled={pending}
               className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--foreground)] px-6 py-3.5 text-sm font-bold uppercase tracking-[0.12em] text-[var(--surface)] transition-colors hover:opacity-90"
             >
-              Create Account
+              {pending ? "Creating account…" : "Create Account"}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </button>
           </form>
 
           {/* Terms */}
           <p className="mt-6 text-center text-xs text-[var(--muted)]">
-            By creating an account, you agree to our{" "}
-            <Link href="#" className="font-medium underline hover:text-[var(--foreground)]">
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link href="#" className="font-medium underline hover:text-[var(--foreground)]">
-              Privacy Policy
-            </Link>
+            By creating an account, you agree to follow the publication’s community guidelines.
           </p>
 
           <div className="mt-8 text-center">

@@ -104,8 +104,16 @@ h6,
 /* Placeholder via data attribute */
 .rich-editor:empty::before {
   content: attr(data-placeholder);
-  color: #c5bdb5;
+  color: var(--muted);
   pointer-events: none;
+}
+
+.rich-editor img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+  border-radius: 0.25rem;
 }
 
 /* Inline formatting rendered by execCommand */

@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/lib/newsletter";
+import { getBackendBaseUrl } from "@/lib/backend";
 
 export type Author = {
   id: string;
@@ -34,7 +34,7 @@ export type UpdateStoryPayload = {
 
 function storiesApiPath(path: string) {
   if (typeof window === "undefined") {
-    return `${API_BASE_URL}${path}`;
+    return `${getBackendBaseUrl()}${path}`;
   }
   return `/api${path}`;
 }
@@ -121,4 +121,17 @@ export async function updateStory(
   }
 
   return (await response.json()) as Story;
+}
+
+export async function deleteStory(id: string): Promise<void> {
+  const response = await fetch(storiesApiPath(`/newsletters/${id}`), {
+    method: "DELETE",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      await readErrorMessage(response, "Unable to discard this story."),
+    );
+  }
 }

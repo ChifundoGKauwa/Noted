@@ -1,7 +1,8 @@
 import { proxyToBackend } from "@/lib/backend";
+import { proxyToBackendWithAuth } from "@/lib/server-backend";
 
 export async function GET() {
-  return proxyToBackend("/subscribers");
+  return proxyToBackendWithAuth("/subscribers");
 }
 
 export async function POST(request: Request) {

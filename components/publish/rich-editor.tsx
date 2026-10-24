@@ -31,6 +31,8 @@ export type RichEditorHandle = {
   getHTML: () => string;
   /** Return plain text (for word-count etc.) */
   getText: () => string;
+  /** Clear the editor content */
+  clear: () => void;
   /** Focus the editor */
   focus: () => void;
 };
@@ -79,6 +81,11 @@ export const RichEditor = forwardRef<RichEditorHandle, RichEditorProps>(
       },
       getText() {
         return divRef.current?.innerText ?? "";
+      },
+      clear() {
+        if (!divRef.current) return;
+        divRef.current.innerHTML = "";
+        fireChange();
       },
       focus() {
         divRef.current?.focus();

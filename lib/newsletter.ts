@@ -12,13 +12,12 @@ export type NewsletterSubscriptionResponse = {
   confirmation_token?: string;
 };
 
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8004";
+const SUBSCRIBERS_PATH = "/api/subscribers";
 
 export async function subscribeToNewsletter(
   payload: NewsletterSubscriptionPayload,
 ): Promise<NewsletterSubscriptionResponse> {
-  const response = await fetch(`${API_BASE_URL}/subscribers`, {
+  const response = await fetch(SUBSCRIBERS_PATH, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -31,9 +30,7 @@ export async function subscribeToNewsletter(
     let message = "We couldn’t subscribe you right now. Please try again.";
 
     try {
-      const data = (await response.json()) as Partial<{
-        message?: string;
-      }>;
+      const data = (await response.json()) as { message?: string };
       if (typeof data.message === "string" && data.message.trim()) {
         message = data.message;
       }
