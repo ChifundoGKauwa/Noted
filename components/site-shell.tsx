@@ -3,13 +3,13 @@ import type { ReactNode } from "react";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 
-const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Write story", href: "/write" },
-];
-
-export function SiteHeader() {
+export function SiteHeader({ homePage }: { homePage: boolean }) {
+  const writeHref = homePage ? "/login" : "/publish";
+  const navItems = [
+    { label: "Home", href: "/" },
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Write story", href: writeHref },
+  ];
   return (
     <header className="border-b border-[var(--border)] bg-[var(--header-bg)] shadow-[0_10px_30px_-24px_rgba(28,27,26,0.28)]">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-6 py-4">
@@ -46,7 +46,7 @@ export function SiteHeader() {
             Subscribe
           </Link>
           <Link
-            href="/write"
+            href={writeHref}
             className="inline-flex items-center justify-center rounded-full bg-[var(--foreground)] px-3.5 py-2 text-xs font-medium text-[var(--background)] transition hover:opacity-90"
           >
             Write story
@@ -57,7 +57,12 @@ export function SiteHeader() {
   );
 }
 
-export function SiteFooter() {
+export function SiteFooter({ homePage }: { homePage: boolean }) {
+  const navItems = [
+    { label: "Home", href: "/" },
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Write story", href: homePage ? "/login" : "/publish" },
+  ];
   return (
     <footer className="border-t border-[var(--border)] bg-[var(--footer-bg)] shadow-[0_-12px_26px_-24px_rgba(28,27,26,0.22)]">
       <div className="mx-auto grid max-w-[1440px] gap-8 px-6 py-10 md:grid-cols-[1.3fr_0.7fr_0.7fr_0.8fr]">
@@ -95,7 +100,7 @@ export function SiteFooter() {
           </p>
           <ul className="mt-4 space-y-2 text-sm text-[var(--muted)]">
             <li>
-              <Link href="/write" className="hover:text-[var(--foreground)]">
+              <Link href={homePage ? "/login" : "/publish"} className="hover:text-[var(--foreground)]">
                 Write story
               </Link>
             </li>
@@ -136,12 +141,12 @@ export function SiteFooter() {
   );
 }
 
-export function SiteShell({ children }: { children: ReactNode }) {
+export function SiteShell({ children, homePage }: { children: ReactNode; homePage: boolean }) {
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] transition-colors duration-200">
-      <SiteHeader />
+      <SiteHeader homePage={homePage} />
       <div className="bg-[var(--background)]">{children}</div>
-      <SiteFooter />
+      <SiteFooter homePage={homePage} />
     </div>
   );
 }
