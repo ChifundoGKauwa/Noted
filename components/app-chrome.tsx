@@ -1,9 +1,11 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 
 import { SiteShell } from "@/components/site-shell";
 
 export function AppChrome({ children }: { children: ReactNode }) {
-  return <SiteShell>{children}</SiteShell>;
+  const pathname = usePathname();
+  return <SiteShell homePage={pathname === "/"}>{children}</SiteShell>;
 }
