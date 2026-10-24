@@ -48,7 +48,7 @@ export function LoginForm({ accountCheck = false }: { accountCheck?: boolean }) 
       if (!response.ok || !("author" in data)) {
         throw new Error("message" in data && data.message ? data.message : "Unable to sign in.");
       }
-      router.push("/publish");
+      router.replace("/dashboard");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Unable to sign in.");
     } finally {
