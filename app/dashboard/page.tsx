@@ -169,7 +169,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
               <div className="ml-auto flex items-center gap-2">
                 <Link
-                  href="/write"
+                  href="/publish"
                   className="flex items-center gap-2 rounded-lg bg-[var(--foreground)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white hover:bg-[var(--foreground)]"
                 >
                   + Post New Story
