@@ -100,7 +100,10 @@ export function SiteFooter({ homePage }: { homePage: boolean }) {
           </p>
           <ul className="mt-4 space-y-2 text-sm text-[var(--muted)]">
             <li>
-              <Link href={homePage ? "/login" : "/publish"} className="hover:text-[var(--foreground)]">
+              <Link
+                href={homePage ? "/login" : "/publish"}
+                className="hover:text-[var(--foreground)]"
+              >
                 Write story
               </Link>
             </li>
@@ -141,9 +144,15 @@ export function SiteFooter({ homePage }: { homePage: boolean }) {
   );
 }
 
-export function SiteShell({ children, homePage }: { children: ReactNode; homePage: boolean }) {
+export function SiteShell({
+  children,
+  homePage,
+}: {
+  children: ReactNode;
+  homePage: boolean;
+}) {
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] transition-colors duration-200">
+    <div className="min-h-screen overflow-x-hidden bg-[var(--background)] text-[var(--foreground)] transition-colors duration-200">
       <SiteHeader homePage={homePage} />
       <div className="bg-[var(--background)]">{children}</div>
       <SiteFooter homePage={homePage} />
