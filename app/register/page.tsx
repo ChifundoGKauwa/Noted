@@ -29,21 +29,36 @@ export default function RegisterPage() {
     setError("");
     try {
       const response = await fetch("/api/auth/register", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), password }),
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          password,
+        }),
       });
-      const data = (await response.json()) as { author?: { id: string; name: string; email: string }; message?: string };
-      if (!response.ok || !data.author) throw new Error(data.message || "Unable to create your account.");
+      const data = (await response.json()) as {
+        author?: { id: string; name: string; email: string };
+        message?: string;
+      };
+      if (!response.ok || !data.author)
+        throw new Error(data.message || "Unable to create your account.");
       router.push("/publish");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Unable to create your account.");
-    } finally { setPending(false); }
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "Unable to create your account.",
+      );
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
-    <main className="mx-auto grid max-w-7xl lg:grid-cols-2 lg:gap-12">
+    <main className="mx-auto grid w-full max-w-7xl gap-0 px-4 py-8 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-12">
       {/* Left Side - Editorial Content */}
-      <div className="px-6 py-12 lg:px-12">
+      <div className="px-4 py-8 sm:px-6 lg:px-12 lg:py-12">
         <div className="mx-auto max-w-md">
           {/* Badge */}
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-muted)] px-3 py-1.5">
@@ -54,21 +69,21 @@ export default function RegisterPage() {
           </div>
 
           {/* Main Quote */}
-          <h1 className="mb-6 text-[2.5rem] font-bold leading-[1.1] tracking-[-0.03em] text-[var(--foreground)]">
-            &ldquo;A publication dedicated to the preservation of disciplined thought, architectural grace, and independent
-            critique.&rdquo;
+          <h1 className="mb-6 text-3xl font-bold leading-[1.1] tracking-[-0.03em] text-[var(--foreground)] sm:text-[2.5rem]">
+            &ldquo;A publication dedicated to the preservation of disciplined
+            thought, architectural grace, and independent critique.&rdquo;
           </h1>
 
-          <p className="mb-12 text-[15px] leading-relaxed text-[var(--muted)]">
-            By creating an account, you enter an uncompromising network of critics, essayists, typographers, and
-            designers shaping modern culture without algorithmic manipulation.
+          <p className="mb-8 text-[15px] leading-relaxed text-[var(--muted)] sm:mb-12">
+            By creating an account, you enter an uncompromising network of
+            critics, essayists, typographers, and designers shaping modern
+            culture without algorithmic manipulation.
           </p>
-
         </div>
       </div>
 
       {/* Right Side - Registration Form */}
-      <div className="px-6 py-12 lg:px-12 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.15)]">
+      <div className="px-4 py-8 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.15)] sm:px-6 lg:px-12 lg:py-12">
         <div className="mx-auto max-w-md">
           <div className="mb-8">
             <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
@@ -78,7 +93,8 @@ export default function RegisterPage() {
               Join as an Author.
             </h2>
             <p className="mt-3 text-[15px] leading-relaxed text-[var(--muted)]">
-              Apply to publish your writing and become part of our curated network of essayists and critics.
+              Apply to publish your writing and become part of our curated
+              network of essayists and critics.
             </p>
           </div>
 
@@ -202,10 +218,16 @@ export default function RegisterPage() {
                   <Eye className="h-5 w-5" />
                 </button>
               </div>
-              <p className="mt-1.5 text-xs text-[var(--muted)]">Include letters, numbers, and symbols</p>
+              <p className="mt-1.5 text-xs text-[var(--muted)]">
+                Include letters, numbers, and symbols
+              </p>
             </div>
 
-            {error ? <p role="alert" className="text-sm text-red-600">{error}</p> : null}
+            {error ? (
+              <p role="alert" className="text-sm text-red-600">
+                {error}
+              </p>
+            ) : null}
 
             <button
               type="submit"
@@ -219,13 +241,17 @@ export default function RegisterPage() {
 
           {/* Terms */}
           <p className="mt-6 text-center text-xs text-[var(--muted)]">
-            By creating an account, you agree to follow the publication’s community guidelines.
+            By creating an account, you agree to follow the publication’s
+            community guidelines.
           </p>
 
           <div className="mt-8 text-center">
             <p className="text-sm text-[var(--muted)]">
               Already have an account?{" "}
-              <Link href="/login" className="font-semibold text-[var(--foreground)] underline">
+              <Link
+                href="/login"
+                className="font-semibold text-[var(--foreground)] underline"
+              >
                 Sign in
               </Link>
             </p>
