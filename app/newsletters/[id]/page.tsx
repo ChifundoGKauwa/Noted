@@ -18,8 +18,10 @@ export default async function NewsletterPage({
   } catch {}
   if (!story || !story.published) {
     return (
-      <main className="mx-auto max-w-2xl px-6 py-24">
-        <h1 className="text-3xl font-semibold">Story unavailable</h1>
+      <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24">
+        <h1 className="text-2xl font-semibold sm:text-3xl">
+          Story unavailable
+        </h1>
         <Link className="mt-6 inline-block underline" href="/">
           Return home
         </Link>
@@ -27,7 +29,7 @@ export default async function NewsletterPage({
     );
   }
   return (
-    <main className="mx-auto max-w-3xl px-6 py-16">
+    <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <Link href="/" className="text-sm text-[var(--muted)]">
         ← Noted
       </Link>
@@ -38,7 +40,7 @@ export default async function NewsletterPage({
           className="mt-8 max-h-[28rem] w-full rounded-2xl object-cover"
         />
       ) : null}
-      <h1 className="mt-8 text-4xl font-semibold tracking-tight sm:text-6xl">
+      <h1 className="mt-8 text-3xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
         {story.title}
       </h1>
       <article className="prose prose-lg mt-8 max-w-none whitespace-pre-wrap leading-8 text-[var(--foreground)]">
