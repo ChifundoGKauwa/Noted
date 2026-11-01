@@ -20,19 +20,26 @@ export default async function ConfirmSubscriptionPage({
     result = (await response.json()) as Confirmation;
     confirmed = response.ok && result.status === "confirmed";
   } catch {
-    result = { message: "We couldn’t reach the subscription service. Please try again later." };
+    result = {
+      message:
+        "We couldn’t reach the subscription service. Please try again later.",
+    };
   }
 
   return (
-    <main className="mx-auto max-w-xl px-6 py-24 text-center">
-      <h1 className="text-3xl font-semibold tracking-tight text-[var(--foreground)]">
+    <main className="mx-auto max-w-xl px-4 py-16 text-center sm:px-6 sm:py-24">
+      <h1 className="text-2xl font-semibold tracking-tight text-[var(--foreground)] sm:text-3xl">
         {confirmed ? "Subscription confirmed" : "Subscription confirmation"}
       </h1>
       <p className="mt-4 text-[var(--muted)]" role="status">
         {result.message ?? "The confirmation link could not be verified."}
       </p>
-      {result.email ? <p className="mt-2 text-sm text-[var(--muted)]">{result.email}</p> : null}
-      <Link href="/" className="mt-8 inline-block underline underline-offset-4">Return to Noted</Link>
+      {result.email ? (
+        <p className="mt-2 text-sm text-[var(--muted)]">{result.email}</p>
+      ) : null}
+      <Link href="/" className="mt-8 inline-block underline underline-offset-4">
+        Return to Noted
+      </Link>
     </main>
   );
 }
