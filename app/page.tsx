@@ -2,6 +2,7 @@ import Link from "next/link";
 import { NewsletterSubscriptionForm } from "@/components/newsletter-subscription";
 import { getBackendBaseUrl } from "@/lib/backend";
 import type { Story } from "@/lib/stories";
+import { storyPreviewText } from "@/lib/story-content";
 
 export default async function Home() {
   let stories: Story[] = [];
@@ -70,8 +71,8 @@ export default async function Home() {
                 <h3 className="text-2xl font-medium tracking-tight text-[var(--foreground)] group-hover:underline underline-offset-4 sm:text-3xl">
                   {story.title}
                 </h3>
-                <p className="mt-3 line-clamp-3 whitespace-pre-wrap text-sm leading-6 text-[var(--muted)]">
-                  {story.content}
+                <p className="mt-3 line-clamp-3 text-sm leading-6 text-[var(--muted)]">
+                  {storyPreviewText(story.content)}
                 </p>
                 {story.created_at ? (
                   <time
