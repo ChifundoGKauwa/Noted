@@ -10,9 +10,11 @@ import {
   Italic,
   Link2,
   List,
+  ListOrdered,
   Quote,
   Redo2,
   Undo2,
+  Underline,
 } from "lucide-react";
 
 import type { RichEditorHandle } from "@/components/publish/rich-editor";
@@ -60,6 +62,7 @@ export function EditorToolbar({ editorRef, onUndo, onRedo, onImageClick }: Props
         <span className="mx-1 h-4 w-px bg-white/20" />
         <ToolbarButton label="Bold" onClick={() => editorRef.current?.exec("bold")}><Bold className="h-4 w-4" /></ToolbarButton>
         <ToolbarButton label="Italic" onClick={() => editorRef.current?.exec("italic")}><Italic className="h-4 w-4" /></ToolbarButton>
+        <ToolbarButton label="Underline" onClick={() => editorRef.current?.exec("underline")}><Underline className="h-4 w-4" /></ToolbarButton>
         <ToolbarButton
           label="Insert link"
           onClick={() => {
@@ -95,6 +98,7 @@ export function EditorToolbar({ editorRef, onUndo, onRedo, onImageClick }: Props
         <ToolbarButton label="Quote" onClick={() => editorRef.current?.exec("formatBlock", "blockquote")}><Quote className="h-4 w-4" /></ToolbarButton>
         <ToolbarButton label="Code block" onClick={() => editorRef.current?.exec("formatBlock", "pre")}><Code2 className="h-4 w-4" /></ToolbarButton>
         <ToolbarButton label="Bullet list" onClick={() => editorRef.current?.exec("insertUnorderedList")}><List className="h-4 w-4" /></ToolbarButton>
+        <ToolbarButton label="Numbered list" onClick={() => editorRef.current?.exec("insertOrderedList")}><ListOrdered className="h-4 w-4" /></ToolbarButton>
         <ToolbarButton label="Insert image" onClick={onImageClick}><ImageIcon className="h-4 w-4" /></ToolbarButton>
       </div>
     </div>
