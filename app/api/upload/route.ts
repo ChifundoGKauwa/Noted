@@ -33,7 +33,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const formData = await request.formData();
+  let formData: FormData;
+  try {
+    formData = await request.formData();
+  } catch {
+    return NextResponse.json(
+      { error: "Could not read the upload. Choose the image again and retry." },
+      { status: 400 },
+    );
+  }
   const file = formData.get("file");
 
   if (!(file instanceof File)) {
@@ -75,20 +83,33 @@ export async function POST(request: NextRequest) {
 
   const body = await file.arrayBuffer();
 
-  const response = await aws.fetch(uploadUrl, {
-    method: "PUT",
-    headers: {
-      "Content-Type": file.type,
-      "x-amz-acl": "public-read",
-    },
-    body,
-  });
+  let response: Response;
+  try {
+    response = await aws.fetch(uploadUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": file.type,
+      },
+      body,
+    });
+  } catch {
+    return NextResponse.json(
+      { error: "Could not connect to image storage. Please try again." },
+      { status: 502 },
+    );
+  }
 
   if (!response.ok) {
     const text = await response.text().catch(() => "");
-    console.error("Supabase S3 upload failed:", response.status, text);
+    const code = text.match(/<Code>([^<]+)<\/Code>/i)?.[1];
+    const message = text.match(/<Message>([^<]+)<\/Message>/i)?.[1];
+    console.error("Supabase S3 upload failed:", response.status, code ?? "unknown error");
     return NextResponse.json(
-      { error: `Upload failed: ${response.status}` },
+      {
+        error: message
+          ? `Storage rejected the image (${code ?? response.status}): ${message}`
+          : `Storage rejected the image (${code ?? response.status}). Check the storage bucket and credentials.`,
+      },
       { status: 502 },
     );
   }
