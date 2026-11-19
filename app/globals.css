@@ -230,3 +230,61 @@ h6,
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* Reader view for saved rich text. Keep the measure and rhythm close to the
+   writing canvas so published stories read like an editorial article. */
+.story-content {
+  font-size: 1.125rem;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+.story-content > :first-child { margin-top: 0; }
+.story-content p,
+.story-content div { margin: 1.35em 0; }
+.story-content h1,
+.story-content h2,
+.story-content h3 {
+  color: var(--foreground);
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+}
+.story-content h1 { margin: 2em 0 0.7em; font-size: 1.8em; }
+.story-content h2 { margin: 1.9em 0 0.65em; font-size: 1.5em; }
+.story-content h3 { margin: 1.7em 0 0.6em; font-size: 1.2em; }
+.story-content blockquote {
+  margin: 1.8em 0;
+  border-left: 2px solid var(--foreground);
+  padding: 0.2em 0 0.2em 1.25em;
+  color: var(--muted-strong);
+  font-family: Georgia, serif;
+  font-size: 1.08em;
+  font-style: italic;
+}
+.story-content ul,
+.story-content ol { margin: 1.25em 0; padding-left: 1.5em; }
+.story-content ul { list-style: disc; }
+.story-content ol { list-style: decimal; }
+.story-content li { margin: 0.45em 0; padding-left: 0.25em; }
+.story-content img { display: block; max-width: 100%; height: auto; margin: 2em auto; }
+.story-content a { color: var(--foreground); text-decoration: underline; text-underline-offset: 3px; }
+.story-content code,
+.story-content pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.story-content code { border-radius: 0.25rem; background: var(--surface-muted); padding: 0.1em 0.35em; font-size: 0.88em; }
+.story-content pre { overflow-x: auto; border-radius: 0.5rem; background: var(--surface-muted); padding: 1em; font-size: 0.85em; }
+.story-content hr { margin: 2.5em 0; border: 0; border-top: 1px solid var(--border-strong); }
+
+.reader-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  height: 2px;
+  width: 0;
+  background: var(--foreground);
+  transition: width 80ms linear;
+}
+
+@media (max-width: 640px) {
+  .story-content { font-size: 1.05rem; line-height: 1.8; }
+}
